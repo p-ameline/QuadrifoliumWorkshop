@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.quadrifolium.workshop</groupId>
+        <artifactId>QuadrifoliumWorkshop</artifactId>
+        <version>1.0.1</version>
+    </parent>
+
+    <artifactId>QuadrifoliumWorkshop-client</artifactId>
+
+    <name>QuadrifoliumWorkshop-client</name>
+    <url>${parent.url}</url>
+
+    <packaging>gwt-app</packaging>
+
+    <dependencies>
+
+        <!-- Modules -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>QuadrifoliumWorkshop-shared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- Needed to provide sources to the compiler -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>QuadrifoliumWorkshop-shared</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <!-- Specific version for GWTTestCase -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- gin -->
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+
+        <!-- guice -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+
+        <!-- gwt-dispatch -->
+        <dependency>
+            <groupId>net.customware.gwt.dispatch</groupId>
+            <artifactId>gwt-dispatch</artifactId>
+        </dependency>
+
+        <!-- gwt-presenter -->
+        <dependency>
+            <groupId>net.customware.gwt.presenter</groupId>
+            <artifactId>gwt-presenter</artifactId>
+        </dependency>
+
+        <!-- gwt-log -->
+        <dependency>
+            <groupId>com.allen-sauer.gwt.log</groupId>
+            <artifactId>gwt-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.gwt-charts</groupId>
+            <artifactId>gwt-charts</artifactId>
+        </dependency>
+
+        <!-- **************** -->
+        <!-- External library -->
+        <!-- **************** -->
+
+        <!-- jfcm -->
+        <dependency>
+            <groupId>org.megadix</groupId>
+            <artifactId>jfcm</artifactId>
+        </dependency>
+
+        <!-- ldv-shared -->
+        <dependency>
+            <groupId>com.ldv</groupId>
+            <artifactId>ldv-shared</artifactId>
+        </dependency>
+
+        <!-- ldv-client -->
+        <dependency>
+            <groupId>com.ldv</groupId>
+            <artifactId>ldv-client</artifactId>
+        </dependency>
+
+        <!-- quadrifolium-shared -->
+        <dependency>
+            <groupId>org.quadrifolium</groupId>
+            <artifactId>quadrifolium-shared</artifactId>
+        </dependency>
+
+        <!-- quadrifolium-client -->
+        <dependency>
+            <groupId>org.quadrifolium</groupId>
+            <artifactId>quadrifolium-client</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <configuration>
+                
+                    <moduleName>org.quadrifolium.workshop.client.QuadrifoliumWorkshop</moduleName>
+                    <moduleShortName>QuadrifoliumWorkshop</moduleShortName>
+
+                    <jvmArgs>-Xmx2048m</jvmArgs>
+                    
+                    <logLevel>ALL</logLevel>
+                    <compilerArgs>
+                        <compileArg>-compileReport</compileArg>
+                    </compilerArgs>
+
+                    <!-- URL that should be opened by DevMode (gwt:devmode). -->
+                    <startupUrls>
+                        <startupUrl>Workshop.html</startupUrl>
+                    </startupUrls>
+
+                </configuration>
+            </plugin>
+
+            <!-- This configuration should execute the GWTTestCase with the standard goal mvn:test but doesn't work -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+                        <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+                    </additionalClasspathElements>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <forkMode>always</forkMode>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>filter-sources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.sourceDirectory}/org/quadrifolium/workshop/client/properties</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <filtering>true</filtering>
+                                    <directory>src/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                </configuration>
+            </plugin>
+            -->
+
+        </plugins>
+
+    </build>
+
+</project>
